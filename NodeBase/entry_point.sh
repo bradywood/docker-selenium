@@ -22,6 +22,18 @@ if [ ! -z "$REMOTE_HOST" ]; then
   REMOTE_HOST_PARAM="-remoteHost $REMOTE_HOST"
 fi
 
+NODE_HOST_PARAM=""
+if [ ! -z "$NODE_HOST" ]; then
+  echo "NODE_HOST variable is set, appending -host"
+  NODE_HOST_PARAM="-host $NODE_HOST"
+fi
+
+NODE_PORT_PARAM=""
+if [ ! -z "$NODE_PORT" ]; then
+  echo "NODE_PORT variable is set, appending -port"
+  NODE_PORT_PARAM="-port $NODE_PORT"
+fi
+
 # TODO: Look into http://www.seleniumhq.org/docs/05_selenium_rc.jsp#browser-side-logs
 
 xvfb-run --server-args="$DISPLAY -screen 0 $GEOMETRY -ac +extension RANDR" \
@@ -29,6 +41,8 @@ xvfb-run --server-args="$DISPLAY -screen 0 $GEOMETRY -ac +extension RANDR" \
     -role node \
     -hub http://$HUB_PORT_4444_TCP_ADDR:$HUB_PORT_4444_TCP_PORT/grid/register \
     ${REMOTE_HOST_PARAM} \
+    ${NODE_HOST_PARAM} \
+    ${NODE_PORT_PARAM} \
     -nodeConfig /opt/selenium/config.json &
 NODE_PID=$!
 
